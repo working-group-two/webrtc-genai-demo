@@ -1,0 +1,11 @@
+--extra-index-url https://buf.build/gen/python
+grpcio
+protobuf
+grpc-interceptor
+fastrtc @ git+https://github.com/freddyaboulton/fastrtc@main
+vad
+python-dotenv
+google-genai
+openai
+requests
+wgtwo-wgtwoapis-grpc-python==1.72.0.1.20250211103443+865631c9c243

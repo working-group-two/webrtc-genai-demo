@@ -15,56 +15,9 @@ audio chat with LLM.
 
 Also, for testing purposes, it can simply echo incoming audio back to the caller.
 
-```mermaid
-flowchart TD
-    subgraph User
-        Phone[Phone/Caller]
-    end
+## Running the Application
 
-    subgraph "Voice Core System"
-        VoiceCore[Voice Core]
-        WTP[WebTerminalProtocol API]
-    end
-
-    subgraph "VoiceBot Application"
-        gRPC[gRPC Interface]
-        FastRTC[FastRTC]
-        MediaProcessor[Media Stream Processor]
-        AI[AI Engine Integration]
-    end
-
-    subgraph "AI Services"
-        Gemini[Google Gemini API]
-        Echo[Echo Test Mode]
-    end
-
-%% Call flow
-    Phone -->|1 Phone Call| VoiceCore
-    VoiceCore -->|2 Intercept Call| WTP
-    WTP -->|3 Call Signaling| gRPC
-    gRPC -->|4 Forward Call Info| FastRTC
-    FastRTC -->|5 Establish WebRTC| VoiceCore
-    VoiceCore -->|6 Media Stream| FastRTC
-    FastRTC -->|7 Audio Data| MediaProcessor
-    MediaProcessor -->|8a Process Audio| Gemini
-    MediaProcessor -->|8b Test Mode| Echo
-    Gemini -->|9a LLM Response| MediaProcessor
-    Echo -->|9b Echo Audio| MediaProcessor
-    MediaProcessor -->|10 Response Audio| FastRTC
-    FastRTC -->|11 Media Stream| VoiceCore
-    VoiceCore -->|12 Audio Output| Phone
-%% Styling
-    classDef core fill: #f9f, stroke: #333, stroke-width: 2px;
-    classDef app fill: #bbf, stroke: #333, stroke-width: 1px;
-    classDef ai fill: #bfb, stroke: #333, stroke-width: 1px;
-    classDef user fill: #fbb, stroke: #333, stroke-width: 1px;
-class VoiceCore, WTP core
-class gRPC,FastRTC, MediaProcessor,AI app
-class Gemini,Echo ai
-class Phone user
-```
-
-## Arguments
+### Arguments
 
 | Argument           | Environment Variable | Required | Description              |
 |--------------------|----------------------|----------|--------------------------|
@@ -97,9 +50,9 @@ If no API keys are provided, the application will run in echo test mode.
 - Get your OpenAI API key from https://platform.openai.com/signup.
 - Get your Gemini API key from https://aistudio.google.com/app/apikey.
 
-## Running
+### Prerequisites
 
-### Setup virtual environment
+You need to set up a virtual environment and install the required dependencies.
 
 ```shell
 python3 -m venv venv
@@ -107,7 +60,7 @@ source venv/bin/activate
 pip install -r requirements.txt
 ```
 
-### Run the application
+### Invoke the Application
 
 This will run the application in echo test mode, as no API keys for AI services are provided.
 
@@ -120,8 +73,6 @@ python3 app.py \
   --msisdn=4799000000
 ```
 
-### Deactivate virtual environment
-
 When you are done, you can deactivate the virtual environment.
 
 ```shell
@@ -131,5 +82,6 @@ deactivate
 ## Troubleshooting
 
 You need to ensure you are on a VoIP-friendly network.
-
 That is, UDP traffic must be allowed to pass through the network.
+
+Otherwise, you may experience that the call is picked up but no audio is heard.
